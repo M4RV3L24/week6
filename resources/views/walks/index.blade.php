@@ -18,6 +18,15 @@
                 </a>
             </div>
         </div>
+        @if (Session::has('message') && Session::get('alert-class') == 'success')
+            <div class="alert alert-success" role="alert">
+                {{ Session::get('message') }}
+            </div>
+        @elseif(Session::has('message') && Session::get('alert-class') == 'danger')
+            <div class="alert alert-danger" role="alert">
+                {{ Session::get('message') }}
+            </div>
+        @endif
         <!-- Table with walks data -->
         <!-- {{ $walks }} -->
         <table id="walkData" class="display">
@@ -57,11 +66,13 @@
                                     <i class="fa-solid fa-pencil"></i>
                                 </button>
                             </a>
-                            <a href="{{ route('walks.destroy', [ "walk" => $data->id ]) }}">
-                                <button type="button" class="btn btn-sm btn-danger ml-1">
+                            <form action="{{ route('walks.destroy', [ "walk" => $data->id ]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger ml-1">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
-                            </a>
+                            </form>
                         </div>
                     </td>
                 </tr>

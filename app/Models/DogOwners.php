@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DogOwners extends Pivot
 {
+    // $incrementing needs to be set 'true' to allow getting id after create
+    public $incrementing = true;
+
     public function walks(): HasMany {
         return $this->hasMany(Walks::class);
     }

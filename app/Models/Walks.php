@@ -10,6 +10,13 @@ class Walks extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     * Untuk allow mass assign
+     * @var array
+     */
+    protected $fillable = ['dog_owner_id', 'started_at', 'finished_at'];
+
     public function dogOwner(): BelongsTo {
         return $this->belongsTo(DogOwners::class);
     }
