@@ -19,7 +19,7 @@
                     </button>
                 </a>
                 <h1>
-                    @if (isset($walkData))
+                    @if (isset($id))
                         Edit
                     @else
                         Add
@@ -40,9 +40,9 @@
                         <div class="text-danger">{{ $errors->first('owner') }}</div>
                     @endif
                     <div class="input-group">
-                        <select class="search-select col-md-6" name="owner">
+                        <select class="search-select col-md-6" name="owner" {{ (isset($id))?'disabled':'' }}>
                             @foreach ($listOwners as $owner)
-                                <option value="{{ $owner->id }}" {{ (isset($walkData) && $walkData->dogOwner->owner->id == $owner->id)?'selected':'' }}>{{ $owner->name }}</option>
+                                <option value="{{ $owner->id }}" {{ (isset($id) && $walkData->dogOwner->owner->id == $owner->id)?'selected':'' }}>{{ $owner->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -55,7 +55,7 @@
                         <div class="text-danger">{{ $errors->first('dog') }}</div>
                     @endif
                     <div class="input-group">
-                        <select class="search-select col-md-6" name="dog">
+                        <select class="search-select col-md-6" name="dog" {{ (isset($id))?'disabled':'' }}>
                         </select>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     <div class="input-group log-event" id="datetimepicker" data-td-target-input="nearest"
                         data-td-target-toggle="nearest">
                         <input id="datetimepickerInput" type="text" class="form-control"
-                            data-td-target="#datetimepicker" name="started_at" value="{{ (isset($walkData))?$walkData->started_at:'' }}" />
+                            data-td-target="#datetimepicker" name="started_at" value="{{ (isset($id))?$walkData->started_at:'' }}" />
                         <span class="input-group-text" data-td-target="#datetimepicker" data-td-toggle="datetimepicker">
                             <i class="fas fa-calendar"></i>
                         </span>
@@ -83,7 +83,7 @@
                     <div class="input-group log-event" id="datetimepicker1" data-td-target-input="nearest"
                         data-td-target-toggle="nearest">
                         <input id="datetimepicker1Input" type="text" class="form-control"
-                            data-td-target="#datetimepicker1" name="finished_at" value="{{ (isset($walkData))?$walkData->finished_at:'' }}" />
+                            data-td-target="#datetimepicker1" name="finished_at" value="{{ (isset($id))?$walkData->finished_at:'' }}" />
                         <span class="input-group-text" data-td-target="#datetimepicker1" data-td-toggle="datetimepicker">
                             <i class="fas fa-calendar"></i>
                         </span>
@@ -128,11 +128,6 @@
         function loadDogData() {
             var id = $('select[name="owner"]').val();
             var url = '{{ url('') }}/dogs/owner/' + id;
-            @if(isset($walkData))
-            var dog_id = {{ $walkData->dogOwner->dog->id }};
-            @else
-            var dog_id = "";
-            @endif
             
             $.ajax({
                 url: url,
@@ -140,15 +135,11 @@
                     console.log(result);
                     var dogNameHtml = "";
                     if (result.data.length > 0) {
-                        // var before = "";
                         for (var i = 0; i < result.data.length; i++) {
-                            console.log(result.data[i]);                            
-                            // if (before != result.data[i].name) {
+                            console.log(result.data[i]);
                             dogNameHtml += "<option value='" + result.data[i].id + "'>";
                             dogNameHtml += result.data[i].name;
                             dogNameHtml += "</option>";
-                            // }
-                            // before = result.data[i].name;
                         }
                     }
                     $("select[name=dog]").html(dogNameHtml);

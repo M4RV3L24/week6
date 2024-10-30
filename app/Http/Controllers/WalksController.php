@@ -38,11 +38,11 @@ class WalksController extends Controller
      */
     public function store(Request $request)
     {
+        // finished_at tidak required, bisa jadi ketika create walk, hanya diinput started_at saja
         $data = $request->validate([
             'owner' => 'required',
             'dog' => 'required',
             'started_at' => 'required',
-            // 'finished_at' => 'required',
         ]);
 
         // Jika data tidak sesuai kriteria validasi
@@ -100,6 +100,7 @@ class WalksController extends Controller
             $walkData->finished_at = Carbon::parse($walkData->finished_at)->format('m/d/Y H:i A');
         } 
         return view("walks/form", [
+            "id" => $id,
             "listOwners" => $listOwners,
             "walkData" => $walkData
         ]);
@@ -110,7 +111,32 @@ class WalksController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // finished_at tidak required, bisa jadi ketika create walk, hanya diinput started_at saja
+        $data = $request->validate([
+            'started_at' => 'required',
+        ]);
+
+        // Jika data tidak sesuai kriteria validasi
+        if (!$data) {
+            Session::flash('message', 'Data walk tidak berhasil diupdate !');
+            Session::flash('alert-class', 'danger');
+            return redirect()->route('walks.index');
+        }
+
+        $finished_at = NULL;
+        // Jika finished at date diisi, baru parse menggunakan Carbon
+        if (isset($request->finished_at)){
+            $finished_at = Carbon::parse($request->finished_at)->format('Y-m-d H:i:s');
+        }
+        Walks::query()->where('id', $id)->update([
+            'started_at' =>  Carbon::parse($request->started_at)->format('Y-m-d H:i:s'),
+            'finished_at' => $finished_at,
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+
+        Session::flash('message','Data walk berhasil diupdate !');
+        Session::flash('alert-class','success');
+        return redirect()->route('walks.index');
     }
 
     /**

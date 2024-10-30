@@ -7,11 +7,9 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 btn-group">
                 <h1>List Walks</h1>
-            </div>
-            <div class="col-md-2 mt-2">
-                <a href="{{ route('walks.create') }}">
+                <a href="{{ route('walks.create') }}" class="btn mt-2">
                     <button type="button" class="btn btn-sm btn-danger">
                         + Create
                     </button>
