@@ -16,6 +16,7 @@ class WalksController extends Controller
      */
     public function index()
     {
+        print_r(session()->all());
         $walksData = Walks::query()->get();
         return view("walks/index", [
             "walks" => $walksData

@@ -20,10 +20,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                @if (!Auth::guest())
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Walks</a>
                     </li>
+                    @if(session()->pull('isAdmin', false))
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Master Data
@@ -33,7 +35,12 @@
                             <li><a class="dropdown-item" href="#">Owners</a></li>
                         </ul>
                     </li>
+                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ route('logout') }}">Log Out</a>
+                    </li>
                 </ul>
+                @endif
             </div>
         </div>
     </nav>
