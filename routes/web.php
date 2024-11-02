@@ -1,11 +1,14 @@
 <?php
 
 use App\Models\Dogs;
+use App\Models\Owners;
 use App\Models\DogOwners;
 use App\Http\Resources\DogResource;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DogsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\WalksController;
+use App\Http\Controllers\OwnersController;
 
 /**
  * List website urls
@@ -15,6 +18,8 @@ Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('au
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::resource('walks', WalksController::class)->middleware('role:admin');
+Route::resource('dogs', DogsController::class)->middleware('role:admin');
+Route::resource('owners', OwnersController::class)->middleware('role:admin');
 
 /**
  * List Dogs API without Authentication

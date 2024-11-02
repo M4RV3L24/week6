@@ -16,9 +16,9 @@ class CheckUserRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        echo "Page permission needed: ".$role,", User permission: ".$request->user()->role->name;
         if (!Auth::check())
             return redirect()->route('login');
+        echo "Page permission needed: ".$role.", User permission: ".$request->user()->role->name;
 
         /**
          * For checking try accessing URL http://localhost:8000/walks/create without login, comment the auth check above first

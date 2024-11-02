@@ -25,14 +25,15 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Walks</a>
                     </li>
-                    @if(session()->pull('isAdmin', false))
+                    @if(Auth::user()->role->name == "admin")
+                    {{-- @if(session()->pull('isAdmin', false)) --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Master Data
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Dogs</a></li>
-                            <li><a class="dropdown-item" href="#">Owners</a></li>
+                            <li><a class="dropdown-item" href="{{ route('dogs.index') }}">Dogs</a></li>
+                            <li><a class="dropdown-item" href="{{ route('owners.index') }}">Owners</a></li>
                         </ul>
                     </li>
                     @endif
